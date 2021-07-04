@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <style>
+        .container{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+        }
+        
+    </style>
+
+    <title>QuotesApp</title>
+  </head>
+  <body>
+      <div class="container">
+        <div class="card shadow-lg p-3 mb-5 bg-body rounded" style="width: 25rem; height: 400px;">
+            <div class="text-center">
+                <img src="/image/logo.png" class="rounded img-fluid" alt="Tweeter logo" width="100px">
+              </div>
+            <div class="card-body position-relative">
+              <h5 class="card-title text-center">Inspirational Quotes</h5>
+              <figure>
+                <blockquote class="blockquote">
+                  <p id="quotes"></p>
+                </blockquote>
+                <figcaption class="blockquote-footer text-end">
+                  <cite title="Source Title" id="author"></cite>
+                </figcaption>
+              </figure>
+              <div class="position-absolute bottom-0 end-0">
+                <a href="#" class="btn btn-primary" id="newq">New Quote</a>
+                <a href="#" class="btn btn-outline-primary" id="twt">Tweet</a></div>
+              
+            </div>
+          </div>
+      </div>
+   
+      <script>
+        
+        const quotes = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const newq = document.getElementById("newq");
+        const twt = document.getElementById("twt");
+
+         let realData = "";
+         let quotesData = "";
+
+        const mytwt=()=>{
+           let tweet= `https://twitter.com/intent/tweet?text=${quotesData.text}`;
+           window.open(tweet);
+        };
+
+         const getNewQuotes = ()=>{
+             let rnum = Math.floor( Math.random()*50);
+            return rnum
+            
+        };
+        
+        const getQuotes = async ()=> {
+            const api = "https://type.fit/api/quotes";
+            try {
+                let data = await fetch(api);
+                let realData = await data.json();
+                let num= getNewQuotes();
+                quotesData = realData[num];
+
+                quotes.innerText = `${quotesData.text}`;
+                 quotesData.author==null?(author.innerText="Unknown"):(author.innerText = `${quotesData.author}`); 
+                 
+
+                // console.log(realData[10].author);
+                // console.log(realData[10].text);
+                // console.log(realData.length);
+            } catch (error) {
+                
+            }
+          };
+          newq.addEventListener('click',getQuotes);
+          twt.addEventListener('click',mytwt)
+          
+          getQuotes();
+
+      </script>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
